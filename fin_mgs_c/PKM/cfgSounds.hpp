@@ -103,9 +103,9 @@ class CfgSoundShaders
 	
 
 	// Reflection Tails ---------------------------------------------------------------------------------------------------------------------------
-	// NÃ¤itÃ¤ ei taida olla erikseen tehty, siis: etsitÃ¤Ã¤n kiva vanilla pyssy joka about yhtÃ¤ voimakas ja kÃ¤yttetÃ¤Ã¤n sen Ã¤Ã¤niÃ¤
-	// Katso sounds_f config.cpp, siellÃ¤ esim. autocannon 30mm yms. muuta geneeristÃ¤ myÃ¶s
-	// Limitation: sÃ¤Ã¤stetÃ¤Ã¤n prosessointitehoa, kun vain voimakkaimmat Ã¤Ã¤net soitetaan. Jos limitation = true (1), niin mukana tÃ¤ssÃ¤ vertailussa (SoundShadersLimit = max soitettavat Ã¤Ã¤net). Esim. tÃ¤ssÃ¤ sisÃ¤tilojen kaiku soi aina vaikkei olisi Ã¤Ã¤nekkÃ¤in, muut kaiut mukana vertailussa
+	// Näitä ei taida olla erikseen tehty, siis: etsitään kiva vanilla pyssy joka about yhtä voimakas ja käyttetään sen ääniä
+	// Katso sounds_f config.cpp, siellä esim. autocannon 30mm yms. muuta geneeristä myös
+	// Limitation: säästetään prosessointitehoa, kun vain voimakkaimmat äänet soitetaan. Jos limitation = true (1), niin mukana tässä vertailussa (SoundShadersLimit = max soitettavat äänet). Esim. tässä sisätilojen kaiku soi aina vaikkei olisi äänekkäin, muut kaiut mukana vertailussa
 	class fin_PKM_tailInterior_SoundShader
 	{
 		samples[] = { { "\a3\sounds_f\arsenal\weapons\Machineguns\Zafir\Zafir_tailInterior.wss", 1 } };
@@ -152,7 +152,7 @@ class CfgSoundSets
 {
 	class fin_PKM_Shot_SoundSet
 	{
-		// Ampuessa pelaajille soi nÃ¤itten Ã¤Ã¤ni shaderien yhteiskikkare, 
+		// Ampuessa pelaajille soi näitten ääni shaderien yhteiskikkare, 
 		// array of SoundShaders to be played together with 100% synchronization
 		// note that not all SoundShaders will necessarily play, it depends on their specific configuration and also on soundShadersLimit parameter
 		soundShaders[] =
@@ -168,19 +168,13 @@ class CfgSoundSets
 		volumeCurve = "inverseSquare3Curve";	// volume multiplicator factor
 		sound3DProcessingType = "fin_PKM_Shot3DProcessingType"; // sound processing type class name (CfgSound3DProcessors)
 		distanceFilter = "weaponShotDistanceFreqAttenuationFilter"; // class name of custom distance frequency attenuation filter (CfgDistanceFilters)
-																   // spatial aina (ACEn sydÃ¤mentykytys -> false, me ei tehdÃ¤ varmaan yhtÃ¤Ã¤n ei spatial Ã¤Ã¤ntÃ¤) edit: paitsi ehkÃ¤ ajoneuvon sisÃ¤llÃ¤ Ã¤Ã¤net
+																   // spatial aina (ACEn sydämentykytys -> false, me ei tehdä varmaan yhtään ei spatial ääntä) edit: paitsi ehkä ajoneuvon sisällä äänet
 		spatial = 1; // is sound considered as positional
-						// nopeasti liikkuville asioille doppler = true, paitsi jos Ã¤Ã¤ni liian nopea (luoti, itse *viuuh* Ã¤Ã¤nessÃ¤ on doppler mukana)
+						// nopeasti liikkuville asioille doppler = true, paitsi jos ääni liian nopea (luoti, itse *viuuh* äänessä on doppler mukana)
 		doppler = 0; // doppler effect simulation
 						 // loop = false: "This is WIP, not sure how it works, will add information as soon as the feature becomes more prevalent." -Wiki
 		loop = 0;
 		speedOfSound = 1;
-		
-		//Kertoimet Ã¤Ã¤nten vaimentumiseen vÃ¤lissÃ¤ olevien esteiden vaikutuksesta, vakiona ampuminen vaimenee liikaa
-		//obsVolumeFactor = 1-(1-GetObstruction)*obstructionFactor; where GetObstruction is value calculated from the scene
-		obstructionFactor = 0.3;
-		//occVolumeFactor = 1-(1-GetOcclusion)*occlusionFactor; where GetOcclusion is value calculated from the scene
-		occlusionFactor = 0.5;
 	};
 	class fin_PKM_Tail_SoundSet
 	{
@@ -193,13 +187,13 @@ class CfgSoundSets
 			"fin_PKM_tailHouses_SoundShader"
 		};
 
-		soundShadersLimit = 6;		// Kuinka monta Ã¤Ã¤ntÃ¤ tarvitaan maksimissa kuulumaan? (sisÃ¤tila-, metsÃ¤-, yms. kaiut samaan aikaan)
+		soundShadersLimit = 6;		// Kuinka monta ääntä tarvitaan maksimissa kuulumaan? (sisätila-, metsä-, yms. kaiut samaan aikaan)
 									// engine will play only soundShadersLimit number of SoundShaders with highest volume value (including calculation of rangeCurve) from the group of SoundShaders which has limitation parameter set to true plus all the others
 
 		volumeFactor = 1.05;
 		volumeCurve = "InverseSquare2Curve";
 		frequencyRandomizerMin = 0.01; // parameters for randomization of frequency to avoid flanging effect when the same sounds are playing in high rate
-									   // Ylempi varmistaa, ettÃ¤ kaksi samaa Ã¤Ã¤ntÃ¤ (2 laukausta) erotettavissa (eri taajuus == eri Ã¤Ã¤ni)
+									   // Ylempi varmistaa, että kaksi samaa ääntä (2 laukausta) erotettavissa (eri taajuus == eri ääni)
 		frequencyRandomizer = 0.05;
 		sound3DProcessingType = "fin_PKM_ShotTail3DProcessingType";
 		distanceFilter = "weaponShotDistanceFreqAttenuationFilter";
@@ -207,12 +201,6 @@ class CfgSoundSets
 		doppler = 0;
 		loop = 0;
 		speedOfSound = 1;
-		
-		//Kertoimet Ã¤Ã¤nten vaimentumiseen vÃ¤lissÃ¤ olevien esteiden vaikutuksesta, vakiona ampuminen vaimenee liikaa
-		//obsVolumeFactor = 1-(1-GetObstruction)*obstructionFactor; where GetObstruction is value calculated from the scene
-		obstructionFactor = 0;
-		//occVolumeFactor = 1-(1-GetOcclusion)*occlusionFactor; where GetOcclusion is value calculated from the scene
-		occlusionFactor = 0.3;
 	};
 };
 
@@ -237,10 +225,10 @@ class cfgSound3DProcessors
 
 class cfgDistanceFilters
 {
-	// PitkÃ¤llÃ¤ matkalla Ã¤Ã¤nestÃ¤ katoaa korkeita taajuuksia, tÃ¤mÃ¤ hoitaa tuon tempun
+	// Pitkällä matkalla äänestä katoaa korkeita taajuuksia, tämä hoitaa tuon tempun
 	class fin_PKM_ShotDistanceFreqAttenuationFilter
 	{
-		// AlipÃ¤Ã¤stÃ¶suodatin leikkaa korkeita taajuuksia (alipÃ¤Ã¤stÃ¶->alhaiset pÃ¤Ã¤see, lue Wikipedia t. sÃ¤hkÃ¶insinÃ¶Ã¶ri). EtÃ¤isyyksillÃ¤ ei tarvinne muita. Jos Ã¤Ã¤net suunniteltu ottamaan taajuudet huomioon, kÃ¤ytÃ¤ distanceFilter = "none"; soundSetissÃ¤
+		// Alipäästösuodatin leikkaa korkeita taajuuksia (alipäästö->alhaiset pääsee, lue Wikipedia t. sähköinsinööri). Etäisyyksillä ei tarvinne muita. Jos äänet suunniteltu ottamaan taajuudet huomioon, käytä distanceFilter = "none"; soundSetissä
 		type = "lowPassFilter"; // type of filter
 		minCutoffFrequency = 300; // cutoff frequency is constantly falling with the distance to minCutoffFrequency value
 		qFactor = 1.5; // https://en.wikipedia.org/wiki/Q_factor
